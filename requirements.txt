@@ -1,0 +1,9 @@
+apache-beam
+kafka-python
+psycopg2-binary
+python-dotenv
+requests
+joblib
+scikit-learn
+pandas
+numpy

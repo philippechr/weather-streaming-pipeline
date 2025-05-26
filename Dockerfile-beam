@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY weather_beam.py /app/weather_beam.py
+COPY requirements.txt /app/requirements.txt
+
+# AI-Modell in den Container kopieren
+RUN mkdir -p /app/ai_model
+COPY ai_model/model/isolation_forest_model.pkl /app/ai_model/model/isolation_forest_model.pkl
+COPY ai_model/model/scaler.pkl /app/ai_model/model/scaler.pkl
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["python", "weather_beam.py"]

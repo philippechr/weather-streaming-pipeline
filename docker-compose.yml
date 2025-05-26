@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:${ZOOKEEPER_VERSION}
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168          # 7 Tage
+      KAFKA_LOG_RETENTION_BYTES: -1           # keine Grössenbeschränkung
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    ports:
+      - "5433:5432" # 5433 auf dem Host, 5432 im Container 
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION}
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile-producer
+    depends_on:
+      - kafka
+    env_file:
+      - .env
+
+  beam:
+    build:
+      context: .
+      dockerfile: Dockerfile-beam
+    depends_on:
+      - kafka
+      - postgres
+    env_file:
+      - .env
+
+volumes:
+  grafana-data:
