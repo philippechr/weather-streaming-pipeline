@@ -8,6 +8,7 @@ Ziel dieses Projekts ist es, eine skalierbare, containerisierte Streaming-Pipeli
 ## 🗂️ Projektübersicht
 Dieses Projekt streamt Wetterdaten von OpenWeatherMap in Echtzeit und verarbeitet sie über eine Event-Streaming-Pipeline. Die Daten werden in einer PostgreSQL-Datenbank gespeichert und mit Grafana visualisiert.
 
+<pre><code>```text
 OPENWEATHERMAP-BIGDATA-PROJECT/
 ├── ai_model/
 │   ├── data/                            # Trainingsdaten für das ML-Modell
@@ -31,6 +32,7 @@ OPENWEATHERMAP-BIGDATA-PROJECT/
 ├── .gitignore                          # Ignoriert sensible / temporäre Dateien
 ├── requirements.txt                    # Python-Abhängigkeiten
 └── readme.md                           # Projektdokumentation (dieses File)
+```</code></pre>
 
 ---
 
